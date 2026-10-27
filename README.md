@@ -87,20 +87,7 @@ the selected period and filters. They are not annualized, confidence intervals, 
 The website is a working JS dashboard, not a PBIX file. DAX is provided as reference code and has not
 been executed in a Power BI engine. SQL and scenario arithmetic are verified locally.
 
-## Suggested practice
 
-- Find the component with the largest total cost. Does the most expensive average repair tell the same story?
-- Filter to Cooling, compare dealer repeat rates and sample sizes, and inspect a repeat claim's prior ID.
-- Explain why a high-cost claim is not proof of an invalid claim.
-- Model a 25% reduction in repeat repairs and a 5% parts discount without double-counting.
-- Write a three-sentence recommendation: observed fact, possible explanation, validation/action.
-
-## Interview framing
-
-“I built a synthetic warranty analytics case study to demonstrate how I define service KPIs,
-validate data, investigate repair patterns, and turn findings into testable recommendations.”
-Distinguish work completed using this reference from your own extensions and real employment experience.
-Add your own SQL analysis, Power BI report and business summary before presenting it as an independent project.
 
 ## Project structure
 
