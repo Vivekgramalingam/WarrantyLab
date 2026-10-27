@@ -1,0 +1,35 @@
+// Power BI reference measures. Create ONE measure at a time.
+// Import claims.csv as FactClaims; dealers.csv as DimDealer; vehicles.csv as DimVehicle.
+// Relationships: each dimension key (1) -> matching FactClaims key (*), single direction.
+// Parse opened_at and closed_at as Date/Time; costs and repair_hours as decimal numbers;
+// flags as whole numbers. Add OpenDate = DATE(YEAR([opened_at]),MONTH([opened_at]),DAY([opened_at]))
+// to FactClaims as a calculated column. Add a DimDate calendar; mark as date table.
+// Relate DimDate[Date] (1) -> FactClaims[OpenDate] (*). Use dimensions for slicers.
+
+Claims = COUNTROWS(FactClaims)
+
+Claimed Warranty Cost = SUM(FactClaims[total_cost])
+
+Average Claim Cost = DIVIDE([Claimed Warranty Cost], [Claims])
+
+Average Repair Hours = AVERAGE(FactClaims[repair_hours])
+
+Repeat Repairs = SUM(FactClaims[repeat_30d])
+
+Repeat Repair Rate = DIVIDE([Repeat Repairs], [Claims])
+
+Flagged Claims = CALCULATE([Claims], KEEPFILTERS(FactClaims[flag_count] > 0))
+
+Repeat Repair Cost = CALCULATE([Claimed Warranty Cost], KEEPFILTERS(FactClaims[repeat_30d] = 1))
+
+Parts Cost = SUM(FactClaims[parts_cost])
+
+Previous Month Cost = CALCULATE([Claimed Warranty Cost], DATEADD(DimDate[Date], -1, MONTH))
+
+Month Cost Change = DIVIDE([Claimed Warranty Cost] - [Previous Month Cost], [Previous Month Cost])
+
+// Example calculated table (create with New Table, not New Measure):
+DimDate = CALENDAR(DATE(2026,1,1), DATE(2026,9,30))
+
+// Intentionally no uptime% measure: repair time alone is not a valid uptime denominator.
+// Repeat flags are computed from full history in Python before report filtering.
